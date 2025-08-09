@@ -1797,7 +1797,55 @@ REDIS_URL=[REDIS-URL]
         window.XMLHttpRequest = function() {
             console.warn('🚫 External data transmission blocked - Enterprise safety active');
             throw new Error('External requests blocked by enterprise safety');
+        window.fetch = function(input, init) {
+            let url = input;
+            if (input instanceof Request) {
+                url = input.url;
+            }
+            // Allow data URLs
+            if (typeof url === 'string' && url.startsWith('data:')) {
+                return originalFetch.apply(this, arguments);
+            }
+            // Allow same-origin requests
+            try {
+                const parsedUrl = new URL(url, window.location.href);
+                if (parsedUrl.origin === window.location.origin) {
+                    return originalFetch.apply(this, arguments);
+                }
+            } catch (e) {
+                // If URL parsing fails, block the request
+                console.warn('🚫 External data transmission blocked - Invalid URL');
+                return Promise.reject(new Error('External requests blocked by enterprise safety'));
+            }
+            console.warn('🚫 External data transmission blocked - Enterprise safety active');
+            return Promise.reject(new Error('External requests blocked by enterprise safety'));
         };
+        
+        // Patch XMLHttpRequest to block external requests
+        function SafeXMLHttpRequest() {
+            const xhr = new originalXHR();
+            const open = xhr.open;
+            xhr.open = function(method, url, ...args) {
+                // Allow data URLs
+                if (typeof url === 'string' && url.startsWith('data:')) {
+                    return open.apply(this, [method, url, ...args]);
+                }
+                try {
+                    const parsedUrl = new URL(url, window.location.href);
+                    if (parsedUrl.origin === window.location.origin) {
+                        return open.apply(this, [method, url, ...args]);
+                    }
+                } catch (e) {
+                    // If URL parsing fails, block the request
+                    console.warn('🚫 External data transmission blocked - Invalid URL');
+                    throw new Error('External requests blocked by enterprise safety');
+                }
+                console.warn('🚫 External data transmission blocked - Enterprise safety active');
+                throw new Error('External requests blocked by enterprise safety');
+            };
+            return xhr;
+        }
+        window.XMLHttpRequest = SafeXMLHttpRequest;
     </script>
 </body>
 </html>
