@@ -1761,7 +1761,8 @@ REDIS_URL=[REDIS-URL]
                 // Force garbage collection if available (Chrome DevTools)
                 if (window.gc) {
                     window.gc();
-                }
+                // Note: Forcing garbage collection is not supported in standard browsers.
+                // Memory will be reclaimed by the browser automatically when appropriate.
                 
                 console.log('🔒 Session data purged - Memory cleared');
             }
