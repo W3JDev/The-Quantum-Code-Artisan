@@ -524,7 +524,7 @@
                     /\b(mongodb|mysql|postgres|oracle|sql):\/{2}[\w\-\.\/\:\@]+/gi,
                     
                     // File Paths
-                    /[C-Z]:\\[^<>:"|?*\r\n]+|\/[^<>:"|?*\r\n]+/g,
+                    /\b([C-Z]:\\(?:[\w\-. ]+\\)*[\w\-. ]+\.\w{2,4})\b|(?:\/(?:[\w\-.]+\/)+[\w\-.]+\.\w{2,4})/g,
                     
                     // Project Codenames (common patterns)
                     /\b(Project|Operation|Initiative)\s+[A-Z][a-z]+/gi,
