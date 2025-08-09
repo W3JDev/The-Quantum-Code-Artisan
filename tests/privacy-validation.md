@@ -323,7 +323,24 @@ Server: app-production-01.internal
 3. Generate multiple solutions with various inputs
 4. Verify no external domain lookups occur
 
-**Expected Result**: ✅ No external DNS queries
+### Test 4.3: DNS Request Monitoring _(Optional Advanced Test)_
+**Objective**: Ensure no DNS lookups occur during application usage
+
+> **Note:** This test is intended for advanced users. If you do not have access to network monitoring tools, you may skip this test or use the alternative method below.
+
+**Procedure (Option 1: Advanced - requires network monitoring tools):**
+1. Use a network monitoring tool (e.g., tcpdump, Wireshark)
+2. Monitor DNS queries during application usage
+3. Generate multiple solutions with various inputs
+4. Verify no external domain lookups occur
+
+**Procedure (Option 2: Typical User - using browser developer tools):**
+1. Open browser developer tools and go to the "Network" tab
+2. Interact with the application and generate multiple solutions
+3. Look for any network requests to external domains
+4. Verify that no requests to external domains are present
+
+**Expected Result**: ✅ No external DNS queries or external network requests
 **Actual Result**: _[To be filled during testing]_
 **Status**: _[PASS/FAIL]_
 
