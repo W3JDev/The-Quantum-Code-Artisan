@@ -518,7 +518,7 @@
                     /\b(server|host|db|api|web|app|prod|staging|dev|test)-[\w-]+/gi,
                     
                     // API Keys and Tokens
-                    /\b[A-Za-z0-9_-]{20,}\b/g,
+                    /\b(?:sk|pk|api|access|auth|secret|token|client|key)[\-_]?[A-Za-z0-9]{16,}\b/gi,
                     
                     // Database Connection Strings
                     /\b(mongodb|mysql|postgres|oracle|sql):\/{2}[\w\-\.\/\:\@]+/gi,
